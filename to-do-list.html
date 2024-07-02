@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="styles.css">
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #fffff0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: #ffe4e1;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#task-form {
+    display: flex;
+}
+
+#task-input {
+    flex: 1.5;
+    padding: 13px;
+    border: 1px solid #e0ffff;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f0fff0;
+    color: black;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #f0e68c;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #d2b48c;
+    padding: 10px;
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 3px;
+}
+
+li .edit, li .delete {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+li .edit:hover, li .delete:hover {
+    color: red;
+}
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Task List</h1>
+        <form id="task-form">
+            <input type="text" id="task-input" placeholder="Add a new task..." required>
+            <button type="submit">Add Task</button>
+        </form>
+        <ul id="task-list"></ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const taskForm = document.getElementById('task-form');
+    const taskInput = document.getElementById('task-input');
+    const taskList = document.getElementById('task-list');
+
+    loadTasks();
+
+    taskForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const taskText = taskInput.value;
+        addTask(taskText);
+        saveTask(taskText);
+        taskInput.value = '';
+    });
+
+    taskList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete')) {
+            const taskItem = e.target.parentElement;
+            removeTask(taskItem);
+            taskItem.remove();
+        } else if (e.target.classList.contains('edit')) {
+            const taskItem = e.target.parentElement;
+            const newText = prompt('Edit your task', taskItem.firstChild.textContent);
+            if (newText) {
+                updateTask(taskItem, newText);
+            }
+        }
+    });
+
+    function addTask(taskText) {
+        const li = document.createElement('li');
+        li.appendChild(document.createTextNode(taskText));
+
+        const editBtn = document.createElement('span');
+        editBtn.className = 'edit';
+        editBtn.textContent = 'Edit';
+        li.appendChild(editBtn);
+
+        const deleteBtn = document.createElement('span');
+        deleteBtn.className = 'delete';
+        deleteBtn.textContent = 'Delete';
+        li.appendChild(deleteBtn);
+
+        taskList.appendChild(li);
+    }
+
+    function saveTask(taskText) {
+        let tasks;
+        if (localStorage.getItem('tasks') === null) {
+            tasks = [];
+        } else {
+            tasks = JSON.parse(localStorage.getItem('tasks'));
+        }
+        tasks.push(taskText);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function loadTasks() {
+        let tasks;
+        if (localStorage.getItem('tasks') === null) {
+            tasks = [];
+        } else {
+            tasks = JSON.parse(localStorage.getItem('tasks'));
+        }
+        tasks.forEach(task => addTask(task));
+    }
+
+    function removeTask(taskItem) {
+        let tasks;
+        if (localStorage.getItem('tasks') === null) {
+            tasks = [];
+        } else {
+            tasks = JSON.parse(localStorage.getItem('tasks'));
+        }
+        tasks = tasks.filter(task => task !== taskItem.firstChild.textContent);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function updateTask(taskItem, newText) {
+        let tasks;
+        if (localStorage.getItem('tasks') === null) {
+            tasks = [];
+        } else {
+            tasks = JSON.parse(localStorage.getItem('tasks'));
+        }
+        const index = tasks.indexOf(taskItem.firstChild.textContent);
+        if (index !== -1) {
+            tasks[index] = newText;
+        }
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        taskItem.firstChild.textContent = newText;
+    }
+});
+
+    </script>
+</body>
+</html>
