@@ -1,0 +1,72 @@
+ body {
+    font-family: Arial, sans-serif;
+    background-color: #fffff0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: #ffe4e1;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#task-form {
+    display: flex;
+}
+
+#task-input {
+    flex: 1.5;
+    padding: 13px;
+    border: 1px solid #e0ffff;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f0fff0;
+    color: black;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #f0e68c;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #d2b48c;
+    padding: 10px;
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 3px;
+}
+
+li .edit, li .delete {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+li .edit:hover, li .delete:hover {
+    color: red;
+}
